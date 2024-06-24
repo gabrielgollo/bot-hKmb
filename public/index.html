@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Bots hKombat</title>
+  </head>
+  <body>
+    <div id="Tokens"></div>
+    <script>
+        function healthCheck() {
+            fetch('/healthcheck')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('Tokens').innerText = JSON.stringify(data, null, 4);
+                });
+        }
+
+        setInterval(healthCheck, 1000);
+
+    </script>
+  </body>
+</html>
