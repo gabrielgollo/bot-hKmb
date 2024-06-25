@@ -125,23 +125,25 @@ class UpgradesStrategy {
       return;
     }
 
-    const Q_TO_BUY = Number(process.env.QUANTITY_UPGRADES_TO_BUY_EACH_TIME) || 4;
-    const MAX_UPGRADES = upgrades.length > Q_TO_BUY ? Q_TO_BUY : upgrades.length;
+    const Q_TO_BUY =
+      Number(process.env.QUANTITY_UPGRADES_TO_BUY_EACH_TIME) || 4;
+    const MAX_UPGRADES =
+      upgrades.length > Q_TO_BUY ? Q_TO_BUY : upgrades.length;
 
     for (let i = 0; i < MAX_UPGRADES; i += 1) {
       const upgrade = upgrades[i];
 
       if (this.bot.clickerUser.balanceCoins > upgrade.price) {
-      const hoursToGetMoneyBack = Number(
-        upgrade.price / upgrade.profitPerHourDelta
-      ).toFixed(3);
-      
-      this.logger.info(
-        `${upgrade.name} - to level ${upgrade.level} - ${upgrade.profitPerHourDelta} profitPerHourDelta - ${upgrade.price} price - Hours to get money back: ${hoursToGetMoneyBack}`
-      );
+        const hoursToGetMoneyBack = Number(
+          upgrade.price / upgrade.profitPerHourDelta
+        ).toFixed(3);
+
+        this.logger.info(
+          `${upgrade.name} - to level ${upgrade.level} - ${upgrade.profitPerHourDelta} profitPerHourDelta - ${upgrade.price} price - Hours to get money back: ${hoursToGetMoneyBack}`
+        );
 
         await this.bot.buyUpgrade(upgrade.id);
-        
+
         await new Promise((resolve) => setTimeout(resolve, 300));
       } else {
         this.logger.warn(

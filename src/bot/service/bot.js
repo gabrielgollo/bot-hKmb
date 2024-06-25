@@ -186,7 +186,11 @@ class BotService {
         timestamp: new Date().getTime(), // in milliseconds
       };
 
-      await this.api.post("/clicker/buy-upgrade", payload);
+      const response = await this.api.post("/clicker/buy-upgrade", payload);
+      if (response.data.clickerUser) {
+        this.logger.warn("updating clickerUser in buyUpgrade");
+        this.clickerUser = new ClickerUser(response.data.clickerUser);
+      }
 
       return true;
     } catch (error) {
@@ -197,7 +201,7 @@ class BotService {
 
       throw new Exception(
         500,
-        `Error in buyUpgrade ${error.response.message}`,
+        `Error in buyUpgrade ${JSON.stringify(error.response.data)}`,
         "ERROR_BUY_UPGRADE"
       );
     }
