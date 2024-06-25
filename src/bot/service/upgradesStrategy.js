@@ -132,9 +132,12 @@ class UpgradesStrategy {
 
     for (let i = 0; i < MAX_UPGRADES; i += 1) {
       const upgrade = upgrades[i];
-      if (upgrade.totalCooldownSeconds > 0) {
+      if (
+        typeof upgrade.cooldownSeconds == "number" &&
+        upgrade.cooldownSeconds > 0
+      ) {
         this.logger.warn(
-          `Upgrade ${upgrade.name} has a cooldown of ${upgrade.totalCooldownSeconds} seconds`
+          `Upgrade ${upgrade.name} has a cooldown of ${upgrade.cooldownSeconds} seconds`
         );
         continue;
       }

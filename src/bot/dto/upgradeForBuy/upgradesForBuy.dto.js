@@ -13,6 +13,7 @@ class UpgradeInListing {
     this.profitPerHourDelta = data?.profitPerHourDelta;
     this.isAvailable = data?.isAvailable;
     this.isExpired = data?.isExpired;
+    this.cooldownSeconds = data?.cooldownSeconds;
     this.totalCooldownSeconds = data?.totalCooldownSeconds;
   }
 }
