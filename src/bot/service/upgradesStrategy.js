@@ -119,45 +119,57 @@ class UpgradesStrategy {
   }
 
   async run() {
-    const upgrades = await this.findBestUpgrades();
-    if (!upgrades || upgrades?.length === 0) {
-      this.logger.info("No upgrades available");
-      return;
-    }
-
-    const Q_TO_BUY =
-      Number(process.env.QUANTITY_UPGRADES_TO_BUY_EACH_TIME) || 4;
-    const MAX_UPGRADES =
-      upgrades.length > Q_TO_BUY ? Q_TO_BUY : upgrades.length;
-
-    for (let i = 0; i < MAX_UPGRADES; i += 1) {
-      const upgrade = upgrades[i];
-      if (
-        typeof upgrade.cooldownSeconds == "number" &&
-        upgrade.cooldownSeconds > 0
-      ) {
-        this.logger.warn(
-          `Upgrade ${upgrade.name} has a cooldown of ${upgrade.cooldownSeconds} seconds`
-        );
-        continue;
+    try {
+      const upgrades = await this.findBestUpgrades();
+      if (!upgrades || upgrades?.length === 0) {
+        this.logger.info("No upgrades available");
+        return;
       }
-      if (this.bot.clickerUser.balanceCoins > upgrade.price) {
-        const hoursToGetMoneyBack = Number(
-          upgrade.price / upgrade.profitPerHourDelta
-        ).toFixed(3);
 
-        this.logger.info(
-          `${upgrade.name} - to level ${upgrade.level} - ${upgrade.profitPerHourDelta} profitPerHourDelta - ${upgrade.price} price - Hours to get money back: ${hoursToGetMoneyBack}`
-        );
+      const Q_TO_BUY =
+        Number(process.env.QUANTITY_UPGRADES_TO_BUY_EACH_TIME) || 4;
+      const MAX_UPGRADES =
+        upgrades.length > Q_TO_BUY ? Q_TO_BUY : upgrades.length;
 
-        await this.bot.buyUpgrade(upgrade.id);
+      for (let i = 0; i < MAX_UPGRADES; i += 1) {
+        const upgrade = upgrades[i];
+        if (
+          typeof upgrade.cooldownSeconds == "number" &&
+          upgrade.cooldownSeconds > 0
+        ) {
+          this.logger.warn(
+            `Upgrade ${upgrade.name} has a cooldown of ${upgrade.cooldownSeconds} seconds`
+          );
+          continue;
+        }
+        if (this.bot.clickerUser.balanceCoins > upgrade.price) {
+          const hoursToGetMoneyBack = Number(
+            upgrade.price / upgrade.profitPerHourDelta
+          ).toFixed(3);
 
-        await new Promise((resolve) => setTimeout(resolve, 300));
-      } else {
-        this.logger.warn(
-          `Not enough money to buy ${upgrade.name} - ${upgrade.price} price`
-        );
+          this.logger.info(
+            `${upgrade.name} - to level ${upgrade.level} - ${upgrade.profitPerHourDelta} profitPerHourDelta - ${upgrade.price} price - Hours to get money back: ${hoursToGetMoneyBack}`
+          );
+
+          await this.bot.buyUpgrade(upgrade.id);
+
+          await new Promise((resolve) =>
+            setTimeout(
+              resolve,
+              Number(process.env.TIME_BETWEEN_UPGRADES_IN_MS || 300)
+            )
+          );
+        } else {
+          this.logger.warn(
+            `Not enough money to buy ${upgrade.name} - ${upgrade.price} price`
+          );
+        }
       }
+    } catch (error) {
+      this.logger.error(
+        "Error in UpgradesStrategy",
+        error?.response?.data || error.message
+      );
     }
   }
 }

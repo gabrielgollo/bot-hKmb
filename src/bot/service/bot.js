@@ -173,7 +173,7 @@ class BotService {
       );
       throw new Exception(
         500,
-        `Error in getUpgradesForBuy ${error?.response?.data || error.message}`,
+        `Error in getUpgradesForBuy ${JSON.stringify(error?.response?.data) || error.message}`,
         "ERROR_UPGRADES"
       );
     }
