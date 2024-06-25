@@ -132,7 +132,12 @@ class UpgradesStrategy {
 
     for (let i = 0; i < MAX_UPGRADES; i += 1) {
       const upgrade = upgrades[i];
-
+      if (upgrade.totalCooldownSeconds > 0) {
+        this.logger.warn(
+          `Upgrade ${upgrade.name} has a cooldown of ${upgrade.totalCooldownSeconds} seconds`
+        );
+        continue;
+      }
       if (this.bot.clickerUser.balanceCoins > upgrade.price) {
         const hoursToGetMoneyBack = Number(
           upgrade.price / upgrade.profitPerHourDelta
