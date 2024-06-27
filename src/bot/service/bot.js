@@ -206,6 +206,51 @@ class BotService {
       );
     }
   }
+
+  async listBoostsForBuy() {
+    try {
+      const response = await this.api.post("/clicker/boosts-for-buy");
+      return new BoostsForBuyDto(response.data.boostsForBuy);
+    } catch (error) {
+      this.logger.error(
+        `${this.telegramData.id} - ${this.telegramData.fullName} - error in listBoostsForBuy`,
+        error
+      );
+      throw new Exception(
+        500,
+        `Error in listBoostsForBuy ${JSON.stringify(error?.response?.data || error.message)}`,
+        "ERROR_LIST_BOOSTS"
+      );
+    }
+  }
+
+  async buyBoost(boostId) {
+    try {
+      const payload = {
+        boostId: boostId,
+        timestamp: new Date().getTime(), // in milliseconds
+      };
+
+      const response = await this.api.post("/clicker/buy-boost", payload);
+      if (response.data.clickerUser) {
+        this.logger.warn("updating clickerUser in buyBoost");
+        this.clickerUser = new ClickerUser(response.data.clickerUser);
+      }
+
+      return true;
+    } catch (error) {
+      this.logger.error(
+        `${this.telegramData.id} - ${this.telegramData.fullName} - error in buyBoost`,
+        error
+      );
+
+      throw new Exception(
+        500,
+        `Error in buyBoost ${JSON.stringify(error.response.data || error.message)}`,
+        "ERROR_BUY_BOOST"
+      );
+    }
+  }
 }
 
 module.exports = { BotService };
