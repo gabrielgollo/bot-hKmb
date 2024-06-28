@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bots hKombat</title>
-  </head>
-  <body>
-    <div id="Tokens"></div>
-    <script>
-        function healthCheck() {
-            fetch('/healthcheck')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('Tokens').innerText = JSON.stringify(data, null, 4);
-                });
-        }
 
-        setInterval(healthCheck, 1000);
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bots hKombat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles/game.css">
+  </link>
+</head>
 
-    </script>
-  </body>
+<body>
+  <div id="Tokens"></div>
+  <div class="friends-wrap"></div>
+  <script src="./script.js"></script>
+</body>
+
 </html>

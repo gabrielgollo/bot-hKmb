@@ -8,6 +8,10 @@ class CreateJobsController {
   static mapJobs() {
     // should run bot service for each token
     const tokens = parseTokensFromEnv();
+    if (tokens.length === 0 || tokens[0] === "") {
+      logger.error("No tokens found in .env file");
+      return;
+    }
     for (let i = 0; i < tokens.length; i++) {
       CronService.createJob(tokens[i], SCHEDULER_CRON_TIME, () =>
         ExecuteBot(tokens[i])
