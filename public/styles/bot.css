@@ -1,40 +1,42 @@
-.friends-item {
+.bot-item {
     align-items: center;
     background: #272a2f;
     border-radius: 20px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 6px;
-    padding: 8px 12px
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    max-width: 371px;
+    max-height: 60px;
 }
 
-.friends-item:last-child {
+.bot-item:last-child {
     margin-bottom: 0
 }
 
-.friends-item .price-value {
+.bot-item .price-value {
     font-size: 14px
 }
 
-.friends-item-stats {
+.bot-item-stats {
     flex: 0 0
 }
 
-.friends-item-user {
+.bot-item-user {
     flex: 1 1 auto;
     padding-right: 12px
 }
 
-.friends-item-user .user-info p {
+.bot-item-user .user-info p {
     font-size: 12px;
     text-overflow: ellipsis
 }
 
-.friends-wrap .section-title {
+.bot-wrap .section-title {
     position: relative
 }
 
-.friends-wrap .section-title .button {
+.section-title .button {
     align-items: center;
     background-color: transparent;
     color: #fff;
@@ -47,7 +49,7 @@
     width: 24px
 }
 
-.friends-wrap .section-title .button span {
+.bot-wrap .section-title .button span {
     font-size: 7px;
     left: 50%;
     position: absolute;
@@ -56,7 +58,7 @@
     transform: translate(-50%,-50%)
 }
 
-.friends-wrap .section-title .button svg {
+.bot-wrap .section-title .button svg {
     height: 100%;
     width: 100%
 }
@@ -104,6 +106,15 @@
     font-weight: 700
 }
 
+.user-info-content p {
+    align-items: left;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin: 0 0 0 0
+}
+
 .user-info-content-data {
     align-items: center;
     display: flex;
@@ -148,7 +159,7 @@
     position: relative
 }
 
-.price,.price-value {
+.price, .price-value {
     align-items: center;
     display: inline-flex;
     justify-content: flex-start
@@ -166,21 +177,16 @@
     color: #8b8e93
 }
 
-html {
-    --tg-color-scheme: dark;
-    --tg-theme-bg-color: #212121;
-    --tg-theme-button-color: #8774e1;
-    --tg-theme-button-text-color: #ffffff;
-    --tg-theme-hint-color: #aaaaaa;
-    --tg-theme-link-color: #8774e1;
-    --tg-theme-secondary-bg-color: #181818;
-    --tg-theme-text-color: #ffffff;
-    --tg-theme-header-bg-color: #212121;
-    --tg-theme-accent-text-color: #8774e1;
-    --tg-theme-section-bg-color: #212121;
-    --tg-theme-section-header-text-color: #8774e1;
-    --tg-theme-subtitle-text-color: #aaaaaa;
-    --tg-theme-destructive-text-color: #ff595a;
-    --tg-viewport-height: 100vh;
-    --tg-viewport-stable-height: 100vh;
+.price-image {
+    height: 20px;
+    min-width: 20px;
+    width: 20px;
+}
+.coin {
+    display: block;
+}
+.img-responsive {
+    display: block;
+    height: auto;
+    max-width: 100%;
 }

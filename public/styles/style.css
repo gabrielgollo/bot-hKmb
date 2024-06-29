@@ -1,0 +1,57 @@
+:root {
+    --tg-color-scheme: dark;
+    --tg-theme-bg-color: #212121;
+    --tg-theme-button-color: #8774e1;
+    --tg-theme-button-text-color: #ffffff;
+    --tg-theme-hint-color: #aaaaaa;
+    --tg-theme-link-color: #8774e1;
+    --tg-theme-secondary-bg-color: #181818;
+    --tg-theme-text-color: #ffffff;
+    --tg-theme-header-bg-color: #212121;
+    --tg-theme-accent-text-color: #8774e1;
+    --tg-theme-section-bg-color: #212121;
+    --tg-theme-section-header-text-color: #8774e1;
+    --tg-theme-subtitle-text-color: #aaaaaa;
+    --tg-theme-destructive-text-color: #ff595a;
+    --tg-viewport-height: 100vh;
+    --tg-viewport-stable-height: 100vh;
+}
+
+body {
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+
+.bot-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+
+}
+
+
+.code-block {
+    background-color: var(--tg-theme-secondary-bg-color);
+    color: var(--tg-theme-text-color);
+    border-radius: 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    margin: 0px 0;
+    padding: 10px;
+    max-width: 100%;
+    max-height: 300px;
+    text-align: left;
+    overflow: auto;
+    
+    /* right: 0; */
+    /* position: absolute; */
+    /* top: 1; */
+}

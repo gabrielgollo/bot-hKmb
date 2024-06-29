@@ -1,4 +1,5 @@
 const { CronJob } = require("cron");
+const { BotService } = require("../bot/service/bot");
 const logger = require("log4js").getLogger("CRON");
 
 class Job {
@@ -23,6 +24,7 @@ class Job {
 }
 
 const jobs = [];
+let bots = {};
 
 class CronService {
   static createJob(id, time, callback) {
@@ -37,7 +39,11 @@ class CronService {
     const functionToExecute = async () => {
       try {
         if (typeof callback === "function") {
-          await callback();
+          const response = await callback();
+
+          if (response instanceof BotService) {
+            bots[response.token] = response;
+          }
         }
       } catch (error) {
         logger.error(`Error in job ${id}: ${error.message}`);
@@ -77,6 +83,14 @@ class CronService {
         createdAt: jobData.createdAt,
       };
     });
+  }
+
+  /**
+   * @description Get all bots
+   * @returns {Object.<string, BotService>}
+   */
+  static getBots() {
+    return bots;
   }
 
   static jobs() {

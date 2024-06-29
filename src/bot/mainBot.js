@@ -58,6 +58,12 @@ async function runOutEnergy(bot, logger) {
   }
 }
 
+/**
+ *
+ * @param {String} token
+ * @param {String} name
+ * @returns BotService
+ */
 async function ExecuteBot(token, name = "") {
   const logger = log4js.getLogger(name || `BOT-${token.slice(0, 5)}`);
 

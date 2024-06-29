@@ -2,22 +2,29 @@
     <div class="friends-item">
         <div class="friends-item-user">
             <div class="user-info">
-                <div class="user-info-avatar"><img src=""></div>
+                <div class="user-info-avatar"><img src="${avatarImage}" alt="Avatar"></div>
                 <div class="user-info-content">
-                    <p>Gabriel Gollo</p>
-                    <div class="user-info-content-data"><span>Epic</span><span class="is-circle"></span>
+                    <p>${user.name}</p>
+                    <div class="user-info-content-data">
+                        <span>${user.rank}</span>
+                        <span class="is-circle"></span>
                         <div class="price">
-                            <div class="price-image"><img class="coin img-responsive is-14" src=""></div>
-                            <div class="price-value">677.15K</div>
-                        </div><span class="text-grey">&nbsp;&nbsp;(622.04K)</span>
+                            <div class="price-image">
+                                <img class="coin img-responsive is-14" src="${coinImage}" alt="Coin">
+                            </div>
+                            <div class="price-value">${user.currentScore}</div>
+                        </div>
+                        <span class="text-grey">&nbsp;&nbsp;(${user.previousScore})</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="friends-item-stats">
             <div class="price">
-                <div class="price-image"><img class="coin img-responsive is-20" src=""></div>
-                <div class="price-value">+95K</div>
+                <div class="price-image">
+                    <img class="coin img-responsive is-20" src="${coinImage}" alt="Coin">
+                </div>
+                <div class="price-value">${user.gain}</div>
             </div>
         </div>
     </div>
