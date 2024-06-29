@@ -32,6 +32,7 @@ const ranks = {
   10: "Lord",
 };
 
+console.log("Script loaded");
 // Função para criar o HTML de um amigo
 function createBotItem(user) {
   const avatarImage = user.avatar || "./images/default-avatar.png";
@@ -45,7 +46,7 @@ function createBotItem(user) {
                     <div class="user-info-content">
                         <p>${user.name}</p>
                         <div class="user-info-content-data">
-                            <span>${rank[user.rank]}</span>
+                            <span>${ranks[user.rank]}</span>
                             <span class="is-circle"></span>
                             <div class="price">
                                 <div class="price-image">

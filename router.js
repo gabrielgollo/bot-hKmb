@@ -27,27 +27,27 @@ router.get("/initJobs", CreateJobsController.initializeJobs);
 router.get("/bots", async (req, res) => {
   try {
     const botsObject = CronService.getBots();
-    const botsArray = Object.keys(botsObject);
+    const botsArray = Object.values(botsObject);
 
     if (botsArray.length > 0) {
       // sync all bots
       for (let i = 0; i < botsArray.length; i++) {
-        const currBot = botsObject[botsArray[i]];
+        const currBot = botsArray[i];
         await currBot.sync();
       }
     }
 
     const infos = {
       total: botsArray.length,
-      bots: botsArray.map((token) => {
+      bots: botsArray.map((bot) => {
         return {
-          name: bots[token].telegramData.fullName,
-          earnPassivePerHour: bots[token].clickerUser.earnPassivePerHour,
-          balanceCoins: bots[token].clickerUser.balanceCoins,
-          rank: bots[token].clickerUser.level,
-          availableTaps: bots[token].clickerUser.availableTaps,
-          lastSync: bots[token].clickerUser.lastSyncUpdate,
-          cipher: bots[token].clickerConfig.dailyCipher.cipher,
+          name: bot.telegramData.fullName,
+          earnPassivePerHour: bot.clickerUser.earnPassivePerHour,
+          balanceCoins: bot.clickerUser.balanceCoins,
+          rank: bot.clickerUser.level,
+          availableTaps: bot.clickerUser.availableTaps,
+          lastSync: bot.clickerUser.lastSyncUpdate,
+          cipher: bot.clickerConfig.dailyCipher.cipher,
         };
       }),
     };
