@@ -1,4 +1,7 @@
+import { stringToMorse } from "./morseTranslator.js";
+
 // script.js
+let dailyCipher = "";
 
 function healthCheck() {
   fetch("/healthcheck")
@@ -32,12 +35,33 @@ const ranks = {
   10: "Lord",
 };
 
-console.log("Script loaded");
-// Função para criar o HTML de um amigo
+function toEngineeringNotation(num) {
+  if (num === 0) return "0";
+
+  const exponent = Math.floor(Math.log10(Math.abs(num)) / 3) * 3;
+  const mantissa = num / Math.pow(10, exponent);
+
+  const suffixes = {
+    0: "",
+    3: "K",
+    6: "M",
+    9: "G",
+    12: "T",
+    15: "P",
+    18: "E",
+  };
+
+  return `${mantissa.toFixed(2)} ${suffixes[exponent]}`;
+}
+
 function createBotItem(user) {
   const avatarImage = user.avatar || "./images/default-avatar.png";
   const coinImage = "./images/default-coin.png";
   const energyImage = "./images/default-energy.png";
+
+  const balanceCoins = toEngineeringNotation(user.balanceCoins);
+  const earnPassivePerHour = toEngineeringNotation(user.earnPassivePerHour);
+
   return `
         <div class="bot-item">
             <div class="bot-item-user">
@@ -52,9 +76,9 @@ function createBotItem(user) {
                                 <div class="price-image">
                                     <img class="coin img-responsive is-14" src="${coinImage}" alt="Coin">
                                 </div>
-                                <div class="price-value">${user.earnPassivePerHour}</div>
+                                <div class="price-value">${earnPassivePerHour} $/h</div>
                             </div>
-                            <span class="text-grey">&nbsp;&nbsp;(${user.balanceCoins})</span>
+                            <span class="text-grey">&nbsp;&nbsp;(${balanceCoins})</span>
                         </div>
                     </div>
                 </div>
@@ -77,11 +101,38 @@ async function loadBots() {
 
     console.log(apiResponse);
 
+    // Atualiza a lista de bots
     const BotList = document.querySelector(".bot-list");
     BotList.innerHTML = "";
     apiResponse?.bots?.forEach((user) => {
       BotList.innerHTML += createBotItem(user);
     });
+
+    // Atualiza o código/Cifra diário
+    const contentEle = document.getElementById("cipher");
+    contentEle.innerHTML = `
+          <div class="card text-white bg-dark mb-3" style="min-width: 5rem;">
+            <div class="card-header">Cipher</div>
+            <div class="card-body">
+              <div id="dailyCipher" class="card-text"></div>
+            </div>  
+          </div>`;
+
+    if (apiResponse?.bots?.length > 0) {
+      dailyCipher = apiResponse.bots[0].cipher;
+      const eleCipher = document.getElementById("dailyCipher");
+      if (eleCipher) {
+        const morseString = stringToMorse(dailyCipher);
+        let treatedMorseString = [];
+
+        for (let i = 0; i < dailyCipher.length; i++) {
+          treatedMorseString.push(`${dailyCipher[i]} : ${morseString[i]}`);
+        }
+
+        // print letter by letter with morse code in right side
+        eleCipher.innerText = `${treatedMorseString.join("\n")}`;
+      }
+    }
   } catch (error) {
     console.error("Erro ao carregar os bots", error);
   }

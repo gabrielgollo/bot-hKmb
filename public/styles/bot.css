@@ -6,8 +6,9 @@
     justify-content: space-between;
     margin-bottom: 8px;
     padding: 8px 12px;
-    max-width: 371px;
-    max-height: 60px;
+    width: 340px;
+    height: 60px;
+
 }
 
 .bot-item:last-child {

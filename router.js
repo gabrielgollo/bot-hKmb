@@ -9,7 +9,7 @@ const startedTime = new Date().getTime();
 router.get("/healthcheck", (req, res) => {
   try {
     const data = {
-      tokens: process.env.TOKENS.split(","),
+      tokens: process.env.TOKENS.split(",").map((token) => token.slice(0, 5)),
       status: "ok",
       uptime: new Date().getTime() - startedTime,
     };
@@ -47,7 +47,7 @@ router.get("/bots", async (req, res) => {
           rank: bot.clickerUser.level,
           availableTaps: bot.clickerUser.availableTaps,
           lastSync: bot.clickerUser.lastSyncUpdate,
-          cipher: bot.clickerConfig.dailyCipher.cipher,
+          cipher: bot.clickerConfig.dailyCipher.Decrypt(),
         };
       }),
     };

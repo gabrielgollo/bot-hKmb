@@ -22,7 +22,7 @@ async function runOutEnergy(bot, logger) {
     const savedTotalTaps = Number(bot.clickerUser.availableTaps);
     const energyConsumedByTap = Number(bot.clickerUser.earnPerTap);
     const quantityOfTaps = Number(process.env.QUANTITY_OF_TAPS || 4);
-    const timeToWait = 2100;
+    const timeToWait = Number(process.env.TIME_BETWEEN_TAPS_IN_MS || 2100);
 
     let totalEnergy = Number(bot.clickerUser.availableTaps);
     let totalCoinsEarned = 0;
