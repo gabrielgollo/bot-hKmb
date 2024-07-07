@@ -21,8 +21,23 @@ async function runOutEnergy(bot, logger) {
   try {
     const savedTotalTaps = Number(bot.clickerUser.availableTaps);
     const energyConsumedByTap = Number(bot.clickerUser.earnPerTap);
-    const quantityOfTaps = Number(process.env.QUANTITY_OF_TAPS || 4);
+
+    if (savedTotalTaps === 0) {
+      logger.warn("No energy to tap");
+      return 0;
+    }
+
+    const parsedQuantityOfTaps = Number(process.env.QUANTITY_OF_TAPS);
+
+    const quantityOfTaps = isNaN(parsedQuantityOfTaps)
+      ? 1
+      : parsedQuantityOfTaps;
     const timeToWait = Number(process.env.TIME_BETWEEN_TAPS_IN_MS || 2100);
+
+    if (quantityOfTaps <= 0) {
+      logger.warn("QUANTITY_OF_TAPS is 0 or less");
+      return 0;
+    }
 
     let totalEnergy = Number(bot.clickerUser.availableTaps);
     let totalCoinsEarned = 0;

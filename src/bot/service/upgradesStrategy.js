@@ -126,8 +126,17 @@ class UpgradesStrategy {
         return;
       }
 
-      const Q_TO_BUY =
-        Number(process.env.QUANTITY_UPGRADES_TO_BUY_EACH_TIME) || 4;
+      const parsedQToBuy = Number(
+        process.env.QUANTITY_UPGRADES_TO_BUY_EACH_TIME
+      );
+
+      const Q_TO_BUY = isNaN(parsedQToBuy) ? 1 : parsedQToBuy;
+
+      if (Q_TO_BUY <= 0) {
+        this.logger.warn("Q_TO_BUY is 0 or less");
+        return;
+      }
+
       const MAX_UPGRADES =
         upgrades.length > Q_TO_BUY ? Q_TO_BUY : upgrades.length;
 
