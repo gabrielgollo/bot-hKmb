@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 const {
   UpgradeInListing,
   UpgradesForBuy,
 } = require("../dto/upgradeForBuy/upgradesForBuy.dto");
-const { BotService } = require("./bot");
+const { BotService } = require("./botService");
 
 class UpgradesStrategy {
   /**

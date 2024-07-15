@@ -1,5 +1,5 @@
 const { CronJob } = require("cron");
-const { BotService } = require("../bot/service/bot");
+const { BotService } = require("../bot/service/botService");
 const logger = require("log4js").getLogger("CRON");
 
 class Job {

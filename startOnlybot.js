@@ -3,7 +3,7 @@ const log4js = require("log4js");
 log4js.configure("./src/config/log4js.json");
 const logger = log4js.getLogger("app");
 
-const { ExecuteBot } = require("./src/bot/mainBot");
+const { ExecuteBot } = require("./src/bot/botFactory");
 const { parseTokensFromEnv } = require("./src/utils/parseTokens");
 
 async function main() {

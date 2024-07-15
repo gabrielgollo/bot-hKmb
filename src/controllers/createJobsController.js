@@ -1,4 +1,4 @@
-const { ExecuteBot } = require("../bot/mainBot");
+const { ExecuteBot } = require("../bot/botFactory");
 const { CronService } = require("../config/cron");
 const { parseTokensFromEnv } = require("../utils/parseTokens");
 

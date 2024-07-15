@@ -509,7 +509,7 @@ class MyUpgrades {
     this.upgrades = {};
 
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
         this.upgrades[key] = new MyUpgrade(data[key]);
       }
     }
