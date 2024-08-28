@@ -1,3 +1,4 @@
+const { AxiosError } = require("axios");
 const { Exception } = require("../../errors/Exception");
 const { createAxiosInstance } = require("../api/api");
 const { BoostsForBuyDto } = require("../dto/boostsForBuy/bootsForBuy.dto");
@@ -50,11 +51,16 @@ class BotService {
     try {
       const response = await this.api.post("/clicker/config");
       this.clickerConfig = new ClickerConfig(response.data);
-    } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error`,
-        error
+      this.logger.info(
+        `${this.telegramData.id} - ${this.telegramData.fullName} - User Config Synched!`
       );
+    } catch (error) {
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
 
       throw new Exception(
         500,
@@ -68,11 +74,16 @@ class BotService {
     try {
       const response = await this.api.post("/clicker/sync");
       this.clickerUser = new ClickerUser(response.data.clickerUser);
-    } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error`,
-        error
+      this.logger.info(
+        `${this.telegramData.id} - ${this.telegramData.fullName} - User Synched!`
       );
+    } catch (error) {
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
     }
   }
 
@@ -88,17 +99,24 @@ class BotService {
 
       this.clickerUser = new ClickerUser(user.data.clickerUser);
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
     }
   }
 
   async claimDailyCipher() {
     try {
       await this.config();
-      if (this.clickerConfig.dailyCipher.isClaimed) return;
+      if (this.clickerConfig.dailyCipher.isClaimed) {
+        this.logger.info(
+          `${this.telegramData.id} - ${this.telegramData.fullName} - Already claimed Daily Cipher!`
+        );
+        return;
+      }
 
       const decryptedCipher = this.clickerConfig.dailyCipher.Decrypt();
       const payload = {
@@ -106,11 +124,16 @@ class BotService {
       };
 
       await this.api.post("/clicker/claim-daily-cipher", payload);
-    } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error`,
-        error.response.message
+      this.logger.info(
+        `${this.telegramData.id} - ${this.telegramData.fullName} - Daily Cipher Claimed!`
       );
+    } catch (error) {
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
     }
   }
 
@@ -119,10 +142,12 @@ class BotService {
       const response = await this.api.post("/clicker/list-tasks");
       return new Tasks(response.data.tasks);
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
     }
   }
 
@@ -134,10 +159,12 @@ class BotService {
 
       await this.api.post("/clicker/check-task", payload);
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - Task ${taskId} error check task`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - Task ${taskId} error check task`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
     }
   }
 
@@ -158,17 +185,21 @@ class BotService {
           this.logger.info("Checking task: ", task.id);
           await this.checkTask(task.id);
         } catch (error) {
-          this.logger.error(
-            `${this.telegramData.id} - ${this.telegramData.fullName} - Task ${task.id} error check task`,
-            error
-          );
+          let message = `${this.telegramData.id} - ${this.telegramData.fullName} - Task ${task.id} error check task`;
+          if (error instanceof AxiosError) {
+            message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+          }
+
+          this.logger.error(message);
         }
       }
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error in claimTasks`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error in claim task - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
     }
   }
 
@@ -177,10 +208,13 @@ class BotService {
       const response = await this.api.post("/clicker/upgrades-for-buy");
       return new UpgradeForBuyResponse(response.data);
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error in upgradesForBuy`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error in upgradesForBuy - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
+
       throw new Exception(
         500,
         `Error in getUpgradesForBuy ${JSON.stringify(error?.response?.data) || error.message}`,
@@ -204,10 +238,12 @@ class BotService {
 
       return true;
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error in buyUpgrade`,
-        error.response.data
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error in buyUpgrade - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
 
       throw new Exception(
         500,
@@ -222,10 +258,13 @@ class BotService {
       const response = await this.api.post("/clicker/boosts-for-buy");
       return new BoostsForBuyDto(response.data.boostsForBuy);
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error in listBoostsForBuy`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error in listBoostsForBuy - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
+
       throw new Exception(
         500,
         `Error in listBoostsForBuy ${JSON.stringify(error?.response?.data || error.message)}`,
@@ -249,10 +288,12 @@ class BotService {
 
       return true;
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error in buyBoost`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error in buyBoost - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
 
       throw new Exception(
         500,
@@ -281,10 +322,11 @@ class BotService {
 
       return true;
     } catch (error) {
-      this.logger.error(
-        `${this.telegramData.id} - ${this.telegramData.fullName} - error in checkBoostFullAvailableTaps`,
-        error
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error in checkBoostFullAvailableTaps - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+      this.logger.error(message);
 
       return false;
     }
@@ -353,10 +395,12 @@ class BotService {
 
       return totalEnergySaved;
     } catch (error) {
-      this.logger.error(
-        "Error while running out energy",
-        error?.response?.data || error.message
-      );
+      let message = `${this.telegramData.id} - ${this.telegramData.fullName} - error while running out energy - ${error.message}`;
+      if (error instanceof AxiosError) {
+        message += ` - ${error.config.baseURL + error.config.url} - status: ${error.status} - ${error.cause} - ${JSON.stringify(error.response.data)}`;
+      }
+
+      this.logger.error(message);
 
       return 0;
     }

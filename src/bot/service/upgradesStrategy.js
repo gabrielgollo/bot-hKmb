@@ -27,7 +27,6 @@ class UpgradesStrategy {
    * @returns
    */
   async checkCondition(upgrade) {
-    this.bot.sync();
     const user = this.bot.clickerUser;
     const currentBotStatus = user?.upgrades;
 
@@ -95,6 +94,7 @@ class UpgradesStrategy {
       return [];
     }
 
+    this.bot.sync();
     // Filtrar upgrades disponíveis e não expirados
     const availableUpgrades = upgrades.filter(
       (upgrade) =>
