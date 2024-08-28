@@ -2,18 +2,18 @@ const { DailyCipher } = require("./dailyCipher.dto");
 
 class ClickerConfig {
   constructor(config) {
-    this.guidLink = config.clickerConfig.guidLink;
-    this.maxPassiveDtSeconds = config.clickerConfig.maxPassiveDtSeconds;
-    this.userLevels_balanceCoins = config.clickerConfig.userLevels_balanceCoins;
-    this.boosts = config.clickerConfig.boosts;
-    this.tasks = config.clickerConfig.tasks;
-    this.airdropTasks = config.clickerConfig.airdropTasks;
-    this.levelUp = config.clickerConfig.levelUp;
-    this.referral = config.clickerConfig.referral;
-    this.exchanges = config.clickerConfig.exchanges;
-    this.airdrops = config.clickerConfig.airdrops;
-    this.depositsUpdateCooldownSeconds =
-      config.clickerConfig.depositsUpdateCooldownSeconds;
+    // this.guidLink = config.clickerConfig.guidLink;
+    // this.maxPassiveDtSeconds = config.clickerConfig.maxPassiveDtSeconds;
+    // this.userLevels_balanceCoins = config.clickerConfig.userLevels_balanceCoins;
+    // this.boosts = config.clickerConfig.boosts;
+    // this.tasks = config.clickerConfig.tasks;
+    // this.airdropTasks = config.clickerConfig.airdropTasks;
+    // this.levelUp = config.clickerConfig.levelUp;
+    // this.referral = config.clickerConfig.referral;
+    // this.exchanges = config.clickerConfig.exchanges;
+    // this.airdrops = config.clickerConfig.airdrops;
+    // this.depositsUpdateCooldownSeconds =
+    //   config.clickerConfig.depositsUpdateCooldownSeconds;
     this.dailyCipher = new DailyCipher(config.dailyCipher);
     this.feature = config.feature;
   }
